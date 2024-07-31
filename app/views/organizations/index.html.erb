@@ -1,0 +1,16 @@
+<div class="mt-20 ml-64 px-3 py-1">
+  <p class="text-2xl font-bold mb-2">All Organizations</p>
+  <hr>
+
+  <div class="mt-4">
+    <% @organizations.each do |organization| %>
+      <ul>
+        <li>
+          <%= organization.name %>
+        </li>
+      </ul>
+    <% end %>
+
+  </div>
+</div>
+  

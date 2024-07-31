@@ -1,0 +1,59 @@
+<div class="mt-20 ml-64 px-3 py-1">
+  <div class="flex items-center justify-between">
+    <p class="text-2xl font-bold">Work From Home Record</p>
+    <% if current_user.manager? %>
+      <%= link_to "Apply for WFH", new_employee_work_from_home_path(current_user.id), class: 'custom-btn' %>
+    <% end %>
+  </div>
+
+  <hr class="my-4">
+
+  <% if current_user.manager? %>
+    <div class="flex items-center justify-center">
+      <%= form_with url: employee_work_from_homes_path, method: :get, local: true, class: 'filter-form' do |form| %>
+        <%= form.select :status,
+            options_for_select( [['All', ''], ['Approved', 'approved'], ['Not Approved', 'not_approved']], params[:status]), 
+            class: 'filter-select' %>
+        <%= form.select :date,
+            options_for_select([['Date Ascending', 'ascending'], ['Date Descending', 'descending']], params[:date]),
+            class: 'filter-select' %>
+        <%= form.select :name,
+            options_for_select([['Name Ascending', 'ascending'], ['Name Descending', 'descending']], params[:name]),
+            class: 'filter-select' %>
+        <%= form.submit 'Apply Filters', class: 'custom-btn' %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% headers = if current_user.manager?
+    ['Name', 'Role', 'Day', 'Date', 'Status', 'Update']
+  else
+    ['Day', 'Date', 'Status']
+  end %>
+  
+  <% rows = @work_from_homes.map do |wfh| 
+    if current_user.manager?
+      [
+        { content: wfh.user.name },
+        { content: wfh.user.role.humanize },
+        { content: wfh.date.strftime('%A') },
+        { content: wfh.date.strftime('%d/%m/%Y') },
+        { content: wfh.status.humanize, class: wfh.status == 'not_approved' ? 'text-red-600' : 'text-green-600' },
+        { content: wfh.status == 'not_approved' ? 
+          button_to('Approve', employee_work_from_home_path(wfh.user.id, wfh.id), method: :patch, 
+                    class: 'custom-btn', 
+                    form: { data: { turbo_confirm: 'Approve WFH request?' } }) : 
+          link_to('Approved', '#', class: 'custom-disabled-btn', disabled: true)
+        }
+      ]
+    else
+      [
+        { content: wfh.date.strftime('%A') },
+        { content: wfh.date.strftime('%d/%m/%Y') },
+        { content: wfh.status.humanize, class: wfh.status == 'not_approved' ? 'text-red-600' : 'text-green-600' },
+      ]
+    end
+  end %>
+
+  <%= render 'shared/records_table', headers: headers, rows: rows %>
+</div>

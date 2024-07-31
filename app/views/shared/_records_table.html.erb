@@ -1,0 +1,18 @@
+<table class="mt-2 w-full text-center rounded-lg shadow-md overflow-hidden">
+  <thead class="bg-gray-200 border-b-2 border-gray-300">
+    <tr>
+      <% headers.each do |header| %>
+        <th class="p-2"><%= header %></th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <% rows.each do |row| %>
+      <tr class="hover:bg-gray-100">
+        <% row.each do |cell| %>
+          <td class="p-3 border-b border-gray-200 <%= cell[:class] %>"><%= cell[:content] %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
