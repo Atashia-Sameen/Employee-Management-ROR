@@ -1,5 +1,0 @@
-class AddDefaultToStatusInWorkFromHome < ActiveRecord::Migration[7.1]
-  def change
-    change_column_default :work_from_homes, :status, 0
-  end
-end
