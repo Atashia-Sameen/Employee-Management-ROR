@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  emp_id: 1
+  type: 1
+  date: 2024-07-25
+  status: 1
+  manager_id: 1
+
+two:
+  emp_id: 1
+  type: 1
+  date: 2024-07-25
+  status: 1
+  manager_id: 1
