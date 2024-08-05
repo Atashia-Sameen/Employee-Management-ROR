@@ -10,18 +10,6 @@
   </head>
 
   <body>
-    <% if notice.present? %>
-      <p class="notice bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3" data-controller="timeout-alert">
-        <%= notice %>
-      </p>
-    <% end %>
-
-    <% if alert.present? %>
-      <p class="alert bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3" data-controller="timeout-alert">
-        <%= alert %>
-      </p>
-    <% end %>
-
     <% if current_user %>
       <%= render 'shared/role_navbar' %>
       <%= render 'shared/sidebar' %>

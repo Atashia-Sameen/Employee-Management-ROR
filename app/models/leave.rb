@@ -7,13 +7,13 @@ class Leave < ApplicationRecord
   enum type: { casual: 0, sick: 1 }
   enum status: { not_approved: 0, approved: 1 }
 
-  scope :by_type, -> (type) { where(type: type) if type.present? }
-  scope :by_status, -> (status) { where(status: status) if status.present? }
-  scope :by_date_order, -> (order) { order(date: order) if order.present? }
+  validates :date, presence: true, uniqueness: {message: 'You have already applied leave for this date.'}
+
+  scope :by_type, -> (type) { where(type: type)}
+  scope :by_status, -> (status) { where(status: status)}
+  scope :by_date_order, -> (order) { order(date: order)}
   scope :by_name_order, -> (order) {
-    joins(:user).order("users.name #{order}") if order.present?
+    joins(:user).order("users.name #{order}")
   }
   scope :ordered, -> { order(created_at: :desc) }
-
-  validates :date, presence: true, uniqueness: {message: 'You have already applied leave for this date.'}
 end

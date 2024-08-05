@@ -72,8 +72,12 @@ gem "tailwindcss-rails", "~> 2.6"
 
 gem "rack", "~> 3.1"
 
-# gem "devise", "~> 4.9"
-
 gem 'devise'
 
+gem 'rspec-rails'
+
 gem 'solid_queue'
+
+gem 'pundit'
+
+gem 'rails-controller-testing'

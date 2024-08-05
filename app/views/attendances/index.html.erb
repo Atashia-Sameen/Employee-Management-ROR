@@ -1,15 +1,14 @@
 <div class="mt-20 ml-64 px-3 py-1">
-  <div class="flex items-center justify-between mb-2">
+  <div class="flex items-center justify-between">
     <p class="text-2xl font-bold">Attendance Records</p>
     <% if @attendance_today.present? %>
       <button class="custom-disabled-btn" disabled> Mark Attendance</button>
     <% else %>
-      <%= link_to "Mark Attendance", new_employee_attendance_path(current_user),
-        class: 'custom-btn'
-      %>
+      <%= link_to "Mark Attendance", new_employee_attendance_path(current_user), class: 'custom-btn' %>
     <% end %> 
   </div>
-  <hr>
+
+  <hr class="my-4">
 
   <% headers = if current_user.manager?
     ['Name', 'Role', 'Day', 'Date', 'Status']

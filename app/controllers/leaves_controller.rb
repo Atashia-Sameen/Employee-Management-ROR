@@ -1,29 +1,27 @@
 class LeavesController < ApplicationController
-  before_action :set_leave, only: [:update]
+  before_action :allow_params_authentication!
+  before_action :set_leave, only: [:show, :update]
 
   def index
-    if current_user.manager?
-      @leaves = Leave.all
-      @leaves = @leaves.by_type(params[:type])
-      @leaves = @leaves.by_status(params[:status])
-      @leaves = @leaves.by_date_order(sort_order(params[:date]))
-      @leaves = @leaves.by_name_order(sort_order(params[:name]))
-      @leaves = @leaves.ordered
-    else
-      @leaves = current_user.leaves.ordered
-    end
+    @leaves = policy_scope(Leave).ordered
+
+    @leaves = @leaves.by_type(params[:type])
+    @leaves = @leaves.by_status(params[:status])
+    @leaves = @leaves.by_date_order(sort_order(params[:date]))
+    @leaves = @leaves.by_name_order(sort_order(params[:name]))
   end
-  
+
   def show
-    @leaves = current_user.leaves
   end
 
   def new
     @leave = current_user.leaves.new
+    authorize @leave
   end
-  
+
   def create
     @leave = current_user.leaves.new(leave_params)
+    authorize @leave
 
     respond_to do |format|
       if @leave.save
@@ -41,7 +39,6 @@ class LeavesController < ApplicationController
   end
 
   def update
-    @leave = Leave.find(params[:id])
     if @leave.update(status: 'approved')
       redirect_to employee_leaves_path, notice: 'Leave approved successfully!'
     else
@@ -52,7 +49,12 @@ class LeavesController < ApplicationController
   private
 
   def set_leave
-    @work_from_home = WorkFromHome.find(params[:id])
+    if current_user.manager?
+      @leave = Leave.find(params[:id])
+    else
+      @leave = current_user.leaves.find(params[:id])
+    end
+    authorize @leave
   end
 
   def leave_params
@@ -62,5 +64,4 @@ class LeavesController < ApplicationController
   def sort_order(order)
     order == 'ascending' ? :asc : :desc
   end
-
 end

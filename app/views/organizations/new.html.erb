@@ -1,4 +1,12 @@
-<div>
-  <h1 class="font-bold text-4xl">Organizations#new</h1>
-  <p>Find me in app/views/organizations/new.html.erb</p>
+<div class="mt-20 ml-64 px-3 py-1">
+  <div class="mb-6">
+    <h2 class="text-2xl font-semibold text-gray-800">Create a new Organization</h2>
+    <hr class="mt-2">
+  </div>
+
+  <%= turbo_frame_tag 'organization_form' do %>
+    <%= render 'form', organization: @organization %>
+  <% end %>
+
+  <%= render 'shared/error_message', model: @organization %>
 </div>

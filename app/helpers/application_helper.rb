@@ -11,7 +11,8 @@ module ApplicationHelper
       [
         { name: 'Attendance Records', path: employee_attendances_path },
         { name: 'Leaves Report', path: employee_leaves_path },
-        { name: 'WFH Report', path: employee_work_from_homes_path }
+        { name: 'WFH Report', path: employee_work_from_homes_path },
+        { name: 'Create Organization', path: employee_organizations_path }
       ]
     when 'employee'
       [
