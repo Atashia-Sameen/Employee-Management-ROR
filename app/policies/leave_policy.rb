@@ -4,20 +4,12 @@ class LeavePolicy < ApplicationPolicy
     user.hr? || user.manager? || user.employee?
   end
 
-  def show?
-    user.hr? || user.manager? || record.user_id == user.id
-  end
-
   def create?
-    user.hr? || user.manager? || user.employee?
+    user.hr? || user.employee?
   end
 
   def update?
-    user.hr? || (user.manager? && record.user.organization_id == user.organization_id) || record.user_id == user.id
-  end
-
-  def destroy?
-    user.hr? || (user.manager? && record.user.organization_id == user.organization_id) || record.user_id == user.id
+    user.manager?
   end
 
   class Scope < Scope

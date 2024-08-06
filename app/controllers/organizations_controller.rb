@@ -1,7 +1,7 @@
 class OrganizationsController < ApplicationController
   before_action :authenticate_user!
-  before_action :authorize_hr!
-  before_action :set_organization, only: [:show, :edit, :update]
+  before_action :authorize_user!
+  before_action :set_organization, only: [:show, :edit]
 
   def index
     @organizations = Organization.all
@@ -37,9 +37,9 @@ class OrganizationsController < ApplicationController
 
   private
 
-  def authorize_hr!
+  def authorize_user!
     unless current_user.hr?
-      redirect_to root_path, alert: 'You are not authorized to access this page.'
+      redirect_to employee_attendances_path, alert: 'You are not authorized to access this page.'
     end
   end
 

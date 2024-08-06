@@ -6,6 +6,6 @@ default: &default
         automatic_attendance:
           class: MarkAttendanceJob
           args: []
-          schedule: "* * * * *"
+          schedule: "* 23 * * *"
 development:
   <<: *default

@@ -1,15 +1,19 @@
 class LeavesController < ApplicationController
-  before_action :allow_params_authentication!
+  before_action :authenticate_user!
   before_action :set_leave, only: [:show, :update]
 
   def index
-    @leaves = policy_scope(Leave).ordered
-
-    @leaves = @leaves.by_type(params[:type])
-    @leaves = @leaves.by_status(params[:status])
-    @leaves = @leaves.by_date_order(sort_order(params[:date]))
-    @leaves = @leaves.by_name_order(sort_order(params[:name]))
+    @leaves = policy_scope(Leave)
+  
+    if current_user.manager?
+      @leaves = @leaves.by_type(params[:type]) if params[:type].present?
+      @leaves = @leaves.by_status(params[:status]) if params[:status].present?
+      @leaves = @leaves.by_date_order(sort_order(params[:date])) if params[:date].present?
+      @leaves = @leaves.by_name_order(sort_order(params[:name])) if params[:name].present?
+    end
+    # debugger
   end
+  
 
   def show
   end
@@ -27,7 +31,7 @@ class LeavesController < ApplicationController
       if @leave.save
         format.html { redirect_to employee_leaves_path, notice: 'Leave applied successfully!' }
         format.turbo_stream do
-          render turbo_stream: turbo_stream.replace('leave_form', partial: 'leaves/leave_success')
+          render turbo_stream: turbo_stream.replace('leave_form', partial: 'shared/flash_message', locals: { message: 'Leave applied successfully!' })
         end
       else
         format.html { render :new }
@@ -63,5 +67,6 @@ class LeavesController < ApplicationController
 
   def sort_order(order)
     order == 'ascending' ? :asc : :desc
-  end
+  end  
+
 end

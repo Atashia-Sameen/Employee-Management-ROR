@@ -1,7 +1,7 @@
 <div class="mt-20 ml-64 px-3 py-1">
   <div class="flex items-center justify-between">
     <p class="text-2xl font-bold">Work From Home Record</p>
-    <% if current_user.manager? %>
+    <% if !current_user.manager? %>
       <%= link_to "Apply for WFH", new_employee_work_from_home_path(current_user.id), class: 'custom-btn' %>
     <% end %>
   </div>

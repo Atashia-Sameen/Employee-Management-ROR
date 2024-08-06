@@ -3,9 +3,13 @@ class WorkFromHomeController < ApplicationController
   before_action :set_wfh, only: [:show, :update]
 
   def index
-    @work_from_homes = policy_scope(WorkFromHome).ordered
-    @work_from_homes = @work_from_homes.by_date_order(sort_order(params[:date]))
-    @work_from_homes = @work_from_homes.by_name_order(sort_order(params[:name]))
+    @work_from_homes = policy_scope(WorkFromHome)
+    
+    if current_user.manager?
+      @work_from_homes = @work_from_homes.by_status(params[:status]) if params[:status].present?
+      @work_from_homes = @work_from_homes.by_date_order(sort_order(params[:date])) if params[:date].present?
+      @work_from_homes = @work_from_homes.by_name_order(sort_order(params[:name])) if params[:name].present?
+    end
   end
 
   def show
@@ -24,7 +28,7 @@ class WorkFromHomeController < ApplicationController
       if @work_from_home.save
         format.html { redirect_to employee_work_from_homes_path, notice: 'Work From Home request applied successfully!' }
         format.turbo_stream do
-          render turbo_stream: turbo_stream.replace('work_from_home_form', partial: 'work_from_home/work_from_home_success')
+          render turbo_stream: turbo_stream.replace('leave_form', partial: 'shared/flash_message', locals: { message: 'Work From Home applied successfully!' })
         end
       else
         format.html { render :new }

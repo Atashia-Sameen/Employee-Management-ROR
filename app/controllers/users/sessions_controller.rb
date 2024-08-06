@@ -1,6 +1,5 @@
 class Users::SessionsController < Devise::SessionsController
   before_action :configure_sign_in_params, only: [:create]
-
   def new
     super
   end
@@ -17,7 +16,6 @@ class Users::SessionsController < Devise::SessionsController
   def after_sign_in_path_for(resource)
     employee_attendances_path(current_user.id)
   end
-  
 
   protected
 

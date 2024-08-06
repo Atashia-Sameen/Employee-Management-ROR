@@ -1,5 +1,5 @@
 class AttendancesController < ApplicationController
-  before_action :allow_params_authentication!
+  before_action :authenticate_user!
   before_action :set_attendance, only: [:show]
   before_action :authorize_attendance, only: [:index, :new, :create]
 
