@@ -1,13 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe "Leaves", type: :request do
-  before do
-    @user = User.create!(name: 'User', email: 'user@example.com', password: 'password', role: 'employee')
-    @manager = User.create!(name: 'Manager', email: 'manager@example.com', password: 'password', role: 'manager')
-    @leave = @user.leaves.create!(date: Date.today, type: 'sick', status: 'approved')
-  end
+  fixtures :users
+  fixtures :leaves
 
-  describe 'GET /index' do
+  describe '#index' do
     context "when user is an employee" do
       before do
         sign_in @user
@@ -31,7 +28,7 @@ RSpec.describe "Leaves", type: :request do
     end
   end
 
-  describe 'GET /show' do
+  describe '#show' do
     before do
       sign_in @user
       get employee_leave_path(@leave)
@@ -54,7 +51,7 @@ RSpec.describe "Leaves", type: :request do
   end
 
   describe 'POST /create' do
-    let(:valid_leave) { { leave: { date: Date.today, type: 'sick', status: 'approved' } } }
+    let(:valid_leave) { { leave: { date: Date.current, type: 'sick', status: 'approved' } } }
     let(:invalid_leave) { { leave: { date: '', type: '', status: '' } } }
 
     context "with valid parameters" do

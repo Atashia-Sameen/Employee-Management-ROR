@@ -1,16 +1,16 @@
 require 'rails_helper'
 
 RSpec.describe AttendancesController, type: :request do
-  before do
-    @organization = Organization.create!(name: 'ABC', creator_id: 1)
-    @manager = User.create!(name: 'manager', email: 'manager@example.com', role: 'manager', organization: @organization, password: 'password')
-    @user = User.create!(name: 'user', email: 'user@example.com', role: 'user', organization: @organization, password: 'password')
 
-    @attendance_today = @user.attendances.create!(date: Date.today, status: :present)
+  fixtures :users
+  fixtures :organizations
+
+  before do
+    @attendance_today = @user.attendances.create!(date: Date.current, status: :present)
     @attendance_yesterday = @user.attendances.create!(date: Date.yesterday, status: :present)
   end
 
-  describe 'GET /index' do
+  describe '#index' do
     context "when user is a manager" do
       before do
         sign_in @manager

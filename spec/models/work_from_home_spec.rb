@@ -9,7 +9,7 @@ RSpec.describe WorkFromHome, type: :model do
       password_confirmation: 'password',
       role: :employee
     )
-    @work_from_home = @user.work_from_homes.new(date: Date.today, status: :not_approved)
+    @work_from_home = @user.work_from_homes.new(date: Date.current, status: :not_approved)
   end
 
   context 'association' do

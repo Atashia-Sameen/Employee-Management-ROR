@@ -1,13 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe "WorkFromHomes", type: :request do
-  before do
-    @organization = Organization.create!(name: 'ABC', creator_id: 1)
-    @manager = User.create!(name: 'manager', email: 'manager@example.com', role: 'manager', organization: @organization, password: 'password')
-    @user = User.create!(name: 'hr', email: 'hr@example.com', role: 'hr', organization: @organization, password: 'password')
-  end
+  fixtures :users
+  fixtures :organizations
 
-  describe 'GET /index' do
+  describe '#index' do
     context "when user is a manager" do
       before do
         sign_in @manager
@@ -48,7 +45,7 @@ RSpec.describe "WorkFromHomes", type: :request do
   end
 
   describe 'POST /create' do
-    let(:valid_wfh) { { work_from_home: { date: Date.today, status: 'not_approved' } } }
+    let(:valid_wfh) { { work_from_home: { date: Date.current, status: 'not_approved' } } }
     let(:invalid_wfh) { { work_from_home: { date: '', status: 'not_approved' } } }
 
     context "when user is an hr or employee" do

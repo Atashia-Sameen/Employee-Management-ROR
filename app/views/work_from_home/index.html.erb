@@ -38,8 +38,8 @@
         { content: wfh.user.role.humanize },
         { content: wfh.date.strftime('%A') },
         { content: wfh.date.strftime('%d/%m/%Y') },
-        { content: wfh.status.humanize, class: wfh.status == 'not_approved' ? 'text-red-600' : 'text-green-600' },
-        { content: wfh.status == 'not_approved' ? 
+        { content: wfh.status.humanize, class: wfh.not_approved? ? 'text-red-600' : 'text-green-600' },
+        { content: wfh.not_approved? ? 
           button_to('Approve', employee_work_from_home_path(wfh.user.id, wfh.id), method: :patch, 
                     class: 'custom-btn', 
                     form: { data: { turbo_confirm: 'Approve WFH request?' } }) : 
@@ -50,7 +50,7 @@
       [
         { content: wfh.date.strftime('%A') },
         { content: wfh.date.strftime('%d/%m/%Y') },
-        { content: wfh.status.humanize, class: wfh.status == 'not_approved' ? 'text-red-600' : 'text-green-600' },
+        { content: wfh.status.humanize, class: wfh.not_approved? ? 'text-red-600' : 'text-green-600' },
       ]
     end
   end %>

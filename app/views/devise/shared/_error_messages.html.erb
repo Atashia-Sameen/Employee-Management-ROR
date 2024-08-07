@@ -1,11 +1,8 @@
 <% if resource.errors.any? %>
-  <div id="error_explanation" data-turbo-cache="false"    
-       class="alert-message"
-       data-controller="timeout-alert"
-  >
+  <div class="error-messages">
     <ul>
-      <% resource.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
+      <% resource.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
       <% end %>
     </ul>
   </div>

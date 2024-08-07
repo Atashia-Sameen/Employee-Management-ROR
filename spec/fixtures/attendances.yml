@@ -1,0 +1,9 @@
+one:
+  user_id: 1
+  date: 2024-07-25
+  status: present
+
+two:
+  user_id: 1
+  date: 2024-07-26
+  status: absent

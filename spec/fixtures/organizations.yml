@@ -1,0 +1,7 @@
+abc:
+  name: 'organization abc'
+  creator_id: <% one.id %>
+
+xyz:
+  name: 'organization xyz'
+  creator_id: <% two.id %>

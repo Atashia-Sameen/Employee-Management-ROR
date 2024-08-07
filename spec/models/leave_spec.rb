@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Leave, type: :model do
   before do
     @user = User.new(name: 'User', email: 'user@example.com')
-    @leave = @user.leaves.new(date: Date.today, type: :casual, status: :not_approved)
+    @leave = @user.leaves.new(date: Date.current, type: :casual, status: :not_approved)
   end
 
   context 'association' do
@@ -32,7 +32,7 @@ RSpec.describe Leave, type: :model do
 
     it 'is not valid with the same date for a user' do
       @leave.save!
-      new_leave = @user.leaves.new(date: Date.today, type: :sick)
+      new_leave = @user.leaves.new(date: Date.current, type: :sick)
       expect(new_leave).not_to be_valid
       expect(new_leave.errors[:date]).to include('You have already applied leave for this date.')
     end

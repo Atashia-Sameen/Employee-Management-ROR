@@ -1,13 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe "Organizations", type: :request do
-  before do
-    @organization = Organization.create!(name: 'ABC', creator_id: 1)
-    @another_organization = Organization.create!(name: 'XYZ', creator_id: 2)
-    @user = User.create!(name: 'User', email: 'user@example.com', role: 'user', password: 'password', organization: @organization)
-  end
+  fixtures :users
+  fixtures :organizations
 
-  describe 'GET /index' do
+  describe '#index' do
     context "when user is an hr or employee" do
       before do
         sign_in @user
@@ -20,7 +17,7 @@ RSpec.describe "Organizations", type: :request do
     end
   end
 
-  describe 'GET /show' do
+  describe '#show' do
   end
 
   describe 'GET /new' do

@@ -8,12 +8,10 @@ class LeavesController < ApplicationController
     if current_user.manager?
       @leaves = @leaves.by_type(params[:type]) if params[:type].present?
       @leaves = @leaves.by_status(params[:status]) if params[:status].present?
-      @leaves = @leaves.by_date_order(sort_order(params[:date])) if params[:date].present?
-      @leaves = @leaves.by_name_order(sort_order(params[:name])) if params[:name].present?
+      @leaves = @leaves.by_date_order(params[:date]) if params[:date].present?
+      @leaves = @leaves.by_name_order(params[:name]) if params[:name].present?
     end
-    # debugger
-  end
-  
+  end  
 
   def show
   end
@@ -46,7 +44,7 @@ class LeavesController < ApplicationController
     if @leave.update(status: 'approved')
       redirect_to employee_leaves_path, notice: 'Leave approved successfully!'
     else
-      redirect_to employee_leaves_path, alert: 'Failed to approve leave.'
+      redirect_to employee_leaves_path, alert: @leave.errors.full_messages.join(", ")
     end
   end
 
@@ -65,8 +63,8 @@ class LeavesController < ApplicationController
     params.require(:leave).permit(:date, :type, :status)
   end
 
-  def sort_order(order)
-    order == 'ascending' ? :asc : :desc
-  end  
+  # def sort_order(order)
+  #   order == 'ascending' ? :asc : :desc
+  # end  
 
 end

@@ -5,14 +5,14 @@ class AttendancesController < ApplicationController
 
   def index
     @attendances = policy_scope(Attendance.all).ordered
-    @attendance_today = current_user.attendances.find_by(date: Date.today) unless current_user.manager?
+    @attendance_today = current_user.attendances.find_by(date: Date.current) unless current_user.manager?
   end
 
   def show
   end
 
   def new
-    @attendance = current_user.attendances.new(date: Date.today)
+    @attendance = current_user.attendances.new(date: Date.current)
   end
 
   def create
@@ -28,11 +28,11 @@ class AttendancesController < ApplicationController
   private
 
   def set_attendance
-    if current_user.manager?
-      @attendance = Attendance.find(params[:id])
-    else
-      @attendance = current_user.attendances.find(params[:id])
-    end
+    @attendance = if current_user.manager?
+                    Attendance.find(params[:id])
+                  else
+                    current_user.attendances.find(params[:id])
+                  end
     authorize @attendance
   end
 

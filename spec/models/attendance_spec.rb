@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Attendance, type: :model do
   before do
     @user = User.new(name: 'User', email: 'user@example.com')
-    @attendance = @user.attendances.new(date: Date.today, status: :present)
+    @attendance = @user.attendances.new(date: Date.current, status: :present)
   end
 
   context 'association' do

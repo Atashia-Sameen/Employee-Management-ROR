@@ -9,3 +9,9 @@ default: &default
           schedule: "* 23 * * *"
 development:
   <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default

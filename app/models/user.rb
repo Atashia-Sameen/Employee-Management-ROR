@@ -3,6 +3,7 @@ class User < ApplicationRecord
   has_many :leaves
   has_many :attendances
   has_many :work_from_homes
+  has_one :own_organization, class_name: 'Organization', inverse_of: 'creator'
 
   enum role: { hr: 0, manager: 1, employee: 2 }
   
@@ -12,4 +13,13 @@ class User < ApplicationRecord
   
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
+
+  before_validation :strip_value
+
+  private
+
+  def strip_value
+    self.name = name.strip if self.name.present?
+    self.email = email.strip if self.email.present?
+  end
 end

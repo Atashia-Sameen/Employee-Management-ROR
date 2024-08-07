@@ -13,5 +13,5 @@ class Leave < ApplicationRecord
   scope :by_type, -> (type) { where(type: type) }
   scope :by_status, -> (status) { where(status: status) }
   scope :by_date_order, -> (order) { order(date: order) }
-  scope :by_name_order, -> (order) { joins(:user).order("users.name #{order}") }
+  scope :by_name_order, -> (order) { joins(:user).order("users.name #{order}") }  
 end

@@ -4,18 +4,18 @@ class OrganizationPolicy < ApplicationPolicy
   end
 
   def show?
-    user.hr?
+    index?
   end
 
   def create?
-    user.hr?
+    index?
   end
 
   def update?
-    user.hr?
+    index?
   end
 
   def destroy?
-    user.hr?
+    index?
   end
 end
