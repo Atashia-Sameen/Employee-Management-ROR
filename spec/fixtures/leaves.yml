@@ -1,0 +1,11 @@
+sick:
+  user: employee
+  type: :sick
+  date: 2024-07-25
+  status: :approved
+
+casual:
+  user: employee
+  type: :casual
+  date: 2024-07-26
+  status: :approved

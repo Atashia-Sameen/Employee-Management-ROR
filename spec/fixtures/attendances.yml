@@ -1,0 +1,9 @@
+present:
+  user: employee
+  date: 2024-07-25
+  status: :present
+
+absent:
+  user: employee
+  date: 2024-07-26
+  status: :absent

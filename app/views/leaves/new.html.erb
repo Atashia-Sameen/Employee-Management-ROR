@@ -1,0 +1,12 @@
+<div class="mt-20 ml-64 px-3 py-1">
+  <div class="mb-6">
+    <h2 class="text-2xl font-semibold text-gray-800">Apply For Leave</h2>
+    <hr class="mt-2">
+  </div>
+
+  <%= turbo_frame_tag 'leave_form' do %>
+    <%= render 'form', leave: @leave %>
+  <% end %>
+
+  <%= render 'shared/error_message', model: @leave %>
+</div>
