@@ -4,8 +4,8 @@ RSpec.describe "AttendanceIndices", type: :system do
   fixtures :users
 
   before do
-    @manager = users(:one)
-    @user = users(:two)
+    @manager = users(:manager)
+    @user = users(:employee)
     @attendance_today = @user.attendances.create!(date: Date.current, status: :present)
   end
 

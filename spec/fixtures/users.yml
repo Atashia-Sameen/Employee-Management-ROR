@@ -1,13 +1,13 @@
-one:
+manager:
   name: "Manager"
   email: "manager@example.com"
   role: :manager
   encrypted_password: '123456789'
-  organization: abc
+  organization: techieminions
 
-two:
+employee:
   name: "Employee"
   email: "employee@example.com"
   role: :employee
   encrypted_password: '123456789'
-  organization: xyz
+  organization: lenovo

@@ -1,9 +1,9 @@
-one:
-  user_id: 1
+present:
+  user: employee
   date: 2024-07-25
-  status: present
+  status: :present
 
-two:
-  user_id: 1
+absent:
+  user: employee
   date: 2024-07-26
-  status: absent
+  status: :absent

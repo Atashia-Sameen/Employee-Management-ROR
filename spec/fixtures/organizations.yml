@@ -1,7 +1,7 @@
-abc:
-  name: 'organization abc'
-  creator_id: <% one.id %>
+techieminions:
+  name: 'organization techieminions'
+  creator: manager
 
-xyz:
-  name: 'organization xyz'
-  creator_id: <% two.id %>
+lenovo:
+  name: 'organization lenovo'
+  creator: manager
