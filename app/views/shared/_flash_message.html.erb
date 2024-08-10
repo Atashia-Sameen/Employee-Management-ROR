@@ -1,4 +1,5 @@
-<div class="alert-message" 
-      data-controller="timeout-alert">
-  <%= message %>
-</div>
+<% if message.present? %>
+  <div id="flash_message" class="alert-message" data-controller="timeout-alert">
+    <%= message %>
+  </div>
+<% end %>

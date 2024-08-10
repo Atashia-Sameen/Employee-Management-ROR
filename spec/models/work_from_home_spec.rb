@@ -1,20 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe WorkFromHome, type: :model do
-  before do
-    @user = User.new(
-      name: 'User',
-      email: 'user@example.com',
-      password: 'password',
-      password_confirmation: 'password',
-      role: :employee
-    )
-    @work_from_home = @user.work_from_homes.new(date: Date.current, status: :not_approved)
-  end
+  fixtures :all
+
+  let(:user) { users(:employee) }
+  let(:wfh) { work_from_homes(:approved) }
 
   context 'association' do
     it 'belongs to a user' do
-      expect(@work_from_home.user).to eq(@user)
+      expect(wfh.user).to eq(user)
     end
   end
 
@@ -27,13 +21,14 @@ RSpec.describe WorkFromHome, type: :model do
 
   context 'validations' do
     it 'is not valid without a date' do
-      @work_from_home.date = nil
-      expect(@work_from_home).not_to be_valid
+      wfh.date = nil
+
+      expect(wfh).not_to be_valid
     end
 
     it 'is not valid with a duplicate date for the same user' do
-      @work_from_home.save
-      new_wfh = @user.work_from_homes.new(date: @work_from_home.date)
+      new_wfh = user.wfh.create(date: Date.current)
+
       expect(new_wfh).not_to be_valid
       expect(new_wfh.errors[:date]).to include('You have already applied WFH for this date.')
     end

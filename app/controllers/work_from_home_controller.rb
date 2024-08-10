@@ -21,19 +21,31 @@ class WorkFromHomeController < ApplicationController
   end
 
   def create
+    if wfh_limit_count?(params[:work_from_home][:date])
+      respond_to do |format|
+        format.html { redirect_to employee_work_from_homes_path, alert: 'Cannot apply for more WFH as you already have 2 in the previous two months.' }
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace('flash_message_container', partial: 'shared/flash_message', 
+          locals: { message: 'Cannot apply for more WFH as you already have 2 in the previous two months.' })
+        end
+      end
+      return
+    end
+  
     @work_from_home = current_user.work_from_homes.new(wfh_params)
     authorize @work_from_home
-
+  
     respond_to do |format|
       if @work_from_home.save
         format.html { redirect_to employee_work_from_homes_path, notice: 'Work From Home request applied successfully!' }
         format.turbo_stream do
-          render turbo_stream: turbo_stream.replace('leave_form', partial: 'shared/flash_message', locals: { message: 'Work From Home applied successfully!' })
+          render turbo_stream: turbo_stream.replace('flash_message_container', partial: 'shared/flash_message', 
+          locals: { message: 'Work From Home applied successfully!' })
         end
       else
         format.html { render :new }
         format.turbo_stream do
-          render turbo_stream: turbo_stream.replace('work_from_home_form', partial: 'work_from_home/form',
+          render turbo_stream: turbo_stream.replace('work_from_home_form', partial: 'work_from_home/form', 
           locals: { work_from_home: @work_from_home })
         end
       end
@@ -68,4 +80,9 @@ class WorkFromHomeController < ApplicationController
     order == 'ascending' ? :asc : :desc
   end
 
+  def wfh_limit_count?(new_wfh_date)
+    new_wfh_date = Date.parse(new_wfh_date)
+    start_date = new_wfh_date - 2.months
+    current_user.work_from_homes.where('date >= ? AND date <= ?', start_date, new_wfh_date).count >= 2
+  end
 end

@@ -1,7 +1,7 @@
 class AttendancesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_attendance, only: [:show]
-  before_action :authorize_attendance, only: [:index, :new, :create]
+  before_action :authorize_attendance, only: [:index, :new]
 
   def index
     @attendances = policy_scope(Attendance.all).ordered
@@ -17,6 +17,8 @@ class AttendancesController < ApplicationController
 
   def create
     @attendance = current_user.attendances.new(attendance_params)
+
+    authorize @attendance
 
     if @attendance.save
       redirect_to employee_attendances_path(current_user, @attendance), notice: 'Attendance marked successfully.'

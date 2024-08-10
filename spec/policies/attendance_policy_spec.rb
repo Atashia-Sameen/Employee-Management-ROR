@@ -1,64 +1,80 @@
 require 'rails_helper'
 
 RSpec.describe AttendancePolicy, type: :policy do
-  let(:user) { create(:user) }
-  let(:attendance) { create(:attendance, user: user) }
-  let(:record) { attendance }
+  fixtures :all
 
-  subject { described_class }
+  let(:hr) { users(:hr) }
+  let(:employee) { users(:employee) }
+  let(:manager) { users(:manager) }
 
-  permissions :index? do
+  let(:hr_policy) { AttendancePolicy.new(hr, hr.attendances) }
+  let(:employee_policy) { AttendancePolicy.new(employee, employee.attendances) }
+  let(:manager_policy) { AttendancePolicy.new(manager, Attendance) }
+
+  describe '#index?' do
     it "allows access for HR" do
-      hr_user = create(:user, :hr)
-      expect(subject).to permit(hr_user, record)
+      expect(hr_policy.index?).to be_truthy
     end
 
     it "allows access for managers" do
-      manager_user = create(:user, :manager)
-      expect(subject).to permit(manager_user, record)
+      expect(employee_policy.index?).to be_truthy
     end
-
+    
     it "allows access for employees" do
-      expect(subject).to permit(user, record)
+      expect(manager_policy.index?).to be_truthy
     end
   end
 
-  permissions :new? do
+  describe '#new?' do
     it "allows access for HR" do
-      hr_user = create(:user, :hr)
-      expect(subject).to permit(hr_user, record)
+      expect(hr_policy.new?).to be_truthy
     end
 
     it "allows access for employees" do
-      expect(subject).to permit(user, record)
+      expect(employee_policy.new?).to be_truthy
+    end
+
+    it "does not allow access for managers" do
+      expect(manager_policy.new?).to be_falsy
     end
   end
 
-  permissions :create? do
+  describe '#create?' do
     it "allows access for HR" do
-      hr_user = create(:user, :hr)
-      expect(subject).to permit(hr_user, record)
+      expect(hr_policy.new?).to be_truthy
     end
 
     it "allows access for employees" do
-      expect(subject).to permit(user, record)
+      expect(employee_policy.new?).to be_truthy
+    end
+
+    it "does not allow access for managers" do
+      expect(manager_policy.new?).to be_falsy
     end
   end
 
-  describe AttendancePolicy::Scope do
-    let(:policy_scope) { Pundit.policy_scope(user, Attendance) }
+  describe 'Scope' do
+    context "when user is an hr" do
+      it "returns only attendances of current user" do
+        scope = AttendancePolicy::Scope.new(hr, Attendance.all).resolve
 
-    context "when user is a manager" do
-      let(:user) { create(:user, :manager) }
-
-      it "returns all attendances" do
-        expect(policy_scope).to include(record)
+        expect(scope).to match_array(hr.attendances)
       end
     end
-
-    context "when user is not a manager" do
-      it "returns only attendances for the user" do
-        expect(policy_scope).to include(record)
+    
+    context "when user is an employee" do
+      it "returns only attendances of current user" do
+        scope = AttendancePolicy::Scope.new(employee, Attendance.all).resolve
+    
+        expect(scope).to match_array(employee.attendances)
+      end
+    end
+    
+    context "when user is a manager" do
+      it "returns all attendances" do
+        scope = AttendancePolicy::Scope.new(manager, Attendance.all).resolve
+    
+        expect(scope).to match_array(Attendance.all)
       end
     end
   end

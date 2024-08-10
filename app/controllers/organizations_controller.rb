@@ -1,7 +1,7 @@
 class OrganizationsController < ApplicationController
   before_action :authenticate_user!
+  before_action :authorize_user!
   before_action :set_organization, only: [:show, :edit]
-  before_action :authorize_organization, only: [:index, :show, :new, :create, :edit]
 
   def index
     @organizations = Organization.all
@@ -24,15 +24,16 @@ class OrganizationsController < ApplicationController
     end
   end
 
-  # def update
-  #   if @organization.update(organization_params)
-  #     redirect_to @organization, notice: 'Organization was successfully updated.'
-  #   else
-  #     render :edit
-  #   end
-  # end
+  def edit
+  end
 
   private
+
+  def authorize_user!
+    unless current_user.hr?
+      redirect_to employee_attendances_path, alert: 'You are not authorized to access this page.'
+    end
+  end
 
   def set_organization
     @organization = Organization.find(params[:id])
@@ -40,9 +41,5 @@ class OrganizationsController < ApplicationController
 
   def organization_params
     params.require(:organization).permit(:name)
-  end
-
-  def authorize_organization
-    authorize Organization
   end
 end

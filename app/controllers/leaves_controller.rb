@@ -8,8 +8,15 @@ class LeavesController < ApplicationController
     if current_user.manager?
       @leaves = @leaves.by_type(params[:type]) if params[:type].present?
       @leaves = @leaves.by_status(params[:status]) if params[:status].present?
-      @leaves = @leaves.by_date_order(params[:date]) if params[:date].present?
-      @leaves = @leaves.by_name_order(params[:name]) if params[:name].present?
+      # @leaves = @leaves.by_date_order(params[:date]) if params[:date].present?
+      # @leaves = @leaves.by_name_order(params[:name]) if params[:name].present?
+      if params[:name].present?
+        params[:date] = nil
+        @leaves = @leaves.by_name_order(params[:name])
+        params[:name] = nil
+      elsif params[:date].present?
+        @leaves = @leaves.by_date_order(params[:date])
+      end
     end
   end  
 
@@ -62,9 +69,5 @@ class LeavesController < ApplicationController
   def leave_params
     params.require(:leave).permit(:date, :type, :status)
   end
-
-  # def sort_order(order)
-  #   order == 'ascending' ? :asc : :desc
-  # end  
 
 end
