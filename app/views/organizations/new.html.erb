@@ -1,0 +1,10 @@
+<div class="mt-20 ml-64 px-3 py-1">
+  <div class="mb-6">
+    <h2 class="text-2xl font-semibold text-gray-800">Create a new Organization</h2>
+    <hr class="mt-2">
+  </div>
+
+  <%= render 'form', organization: @organization %>
+
+  <%= render 'shared/error_message', model: @organization %>
+</div>

@@ -1,0 +1,9 @@
+approved:
+  user: employee
+  date: 2024-07-25
+  status: :approved
+
+not_approved:
+  user: employee
+  date: 2024-07-26
+  status: :not_approved

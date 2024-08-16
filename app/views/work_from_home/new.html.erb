@@ -1,0 +1,14 @@
+<div class="mt-20 ml-64 px-3 py-1">
+  <div class="mb-6">
+    <h2 class="text-2xl font-semibold text-gray-800">Apply For WFH</h2>
+    <hr class="mt-2">
+  </div>
+
+  <%= turbo_frame_tag 'wfh_form' do %>
+    <%= render 'form', work_from_home: @work_from_home %>
+  <% end %>
+
+  <%= render 'shared/error_message', model: @work_from_home %>
+
+</div>
+

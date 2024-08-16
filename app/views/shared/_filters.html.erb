@@ -1,0 +1,23 @@
+<%= form_with(url: url, method: :get, local: false, data: { turbo_frame: 'list', controller: 'apply-filter' }, 
+              class: 'filter-form flex flex-wrap justify-end space-x-4') do |form| %>
+  
+  <% if params[:model] == 'Leave' %>
+    <%= form.select :type, 
+        options_for_select(type_filter, params[:type]),
+        class: 'filter-select' %>
+  <% end %>
+
+  <%= form.select :status, 
+      options_for_select(status_filter, params[:status]), 
+      class: 'filter-select' %>
+
+  <%= form.select :date, 
+      options_for_select(date_filter, params[:date]),
+      class: 'filter-select' %>
+
+  <%= form.select :name, 
+      options_for_select(name_filter, params[:name]),
+      class: 'filter-select' %>
+
+  <%= form.submit '' %>
+<% end %>

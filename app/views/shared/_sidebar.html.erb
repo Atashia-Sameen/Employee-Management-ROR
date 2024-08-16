@@ -1,0 +1,9 @@
+<div class="sidebar fixed top-16 left-0 h-full w-64 bg-zinc-900	text-white py-6 px-4">
+  <ul  class="space-y-4">
+    <% sidebar_links.each do |link| %>
+      <li>
+        <%= link_to link[:name], link[:path], class: 'block py-2 px-4 rounded bg-zinc-800 hover:bg-zinc-700' %>
+      </li>
+    <% end %>
+  </ul>
+</div>

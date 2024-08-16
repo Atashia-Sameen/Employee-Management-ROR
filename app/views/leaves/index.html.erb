@@ -1,0 +1,19 @@
+<div class="mt-20 ml-64 px-3 py-1">
+  <div class="flex items-center justify-between">
+    <p class="text-2xl font-bold">Leaves Records</p>
+    <%= render 'apply_leave_button' %>
+  </div>
+
+  <hr class="my-4">
+
+  <% if current_user.manager? %>
+    <%= turbo_frame_tag "filters" do %>
+      <%= render 'shared/filters', url: employee_leaves_path, model: 'Leave' %>
+    <% end %>  
+  <% end %>
+
+  <%= turbo_frame_tag "list" do %>
+    <%= render 'shared/records_table', headers: leave_table_headers, rows: leave_table_rows %>
+  <% end %>
+
+</div>
