@@ -38,8 +38,6 @@ class WorkFromHomeController < ApplicationController
   def update
     authorize @work_from_home
 
-    debugger
-
     if @work_from_home.update(status: 'approved')
       redirect_to employee_work_from_homes_path, notice: 'Work From Home request approved successfully!'
     else

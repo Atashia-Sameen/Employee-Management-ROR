@@ -5,7 +5,7 @@ class WorkFromHome < ApplicationRecord
 
   enum status: { not_approved: 0, approved: 1 }
 
-  validates :date, presence: true, uniqueness: { message: 'You have already applied WFH for this date.' }
+  validates :date, presence: true, uniqueness: { scope: :user_id, message: 'You have already applied WFH for this date.' }
 
   scope :filter_by_status, -> (status) { where(status: status) }
   scope :filter_by_date, -> (order) { order(date: order) }

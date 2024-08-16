@@ -6,10 +6,10 @@ Rails.application.routes.draw do
   }
 
   resources :employees do
-    resources :attendances
-    resources :leaves
-    resources :organizations
-    resources :work_from_homes, controller: 'work_from_home'
+    resources :attendances, only: [:index, :new, :create]
+    resources :leaves, only: [:index, :new, :create, :update]
+    resources :organizations, only: [:index, :new, :create]
+    resources :work_from_homes, only: [:index, :new, :create, :update]
   end
 
 end

@@ -56,6 +56,7 @@ class LeavesController < ApplicationController
               else
                 current_user.leaves.find(params[:id])
               end
+
     authorize @leave
   end
 

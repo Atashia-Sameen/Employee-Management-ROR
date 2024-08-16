@@ -17,7 +17,7 @@ class AttendancesController < ApplicationController
     @attendance.date = Date.current
     authorize @attendance
 
-    if @attendance.save
+    if @attendance.saveq
       redirect_to employee_attendances_path(current_user), notice: 'Attendance marked successfully.'
     else
       flash.now[:alert] = @attendance.errors.full_messages.join(", ")
@@ -32,7 +32,7 @@ class AttendancesController < ApplicationController
   end
 
   def set_attendance_today
-    @attendance_today = current_user.attendances.find_by(date: Date.current) unless current_user.manager?
+    @attendance_today = current_user.attendances.find_by(date: Date.current)
   end
 
   def check_attendance_marked
