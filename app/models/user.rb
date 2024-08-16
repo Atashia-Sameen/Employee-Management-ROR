@@ -14,12 +14,19 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  before_validation :strip_value
+  before_create :strip_value
+  before_create :add_own_organization
 
   private
 
   def strip_value
-    self.name = name.strip if self.name.present?
-    self.email = email.strip if self.email.present?
+    self.name = name.strip
+    self.email = email.strip
   end
+
+  def add_own_organization
+    return if self.own_organization
+      self.organization = Organization.create(name: self.name, creator_id: self.id)
+  end
+
 end

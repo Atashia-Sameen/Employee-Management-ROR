@@ -13,11 +13,11 @@ class ApplicationPolicy
   end
 
   def show?
-    false
+    index?
   end
 
   def create?
-    false
+    index?
   end
 
   def new?
@@ -25,7 +25,7 @@ class ApplicationPolicy
   end
 
   def update?
-    false
+    index?
   end
 
   def edit?
@@ -33,7 +33,7 @@ class ApplicationPolicy
   end
 
   def destroy?
-    false
+    index?
   end
 
   class Scope

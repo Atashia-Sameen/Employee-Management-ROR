@@ -11,7 +11,7 @@ class Users::SessionsController < Devise::SessionsController
 
   def destroy
     sign_out current_user
-    return redirect_to user_session_path, notice: 'Successfully signed out.'
+    redirect_to user_session_path, notice: 'Successfully signed out.'
   end
 
   def after_sign_in_path_for(resource)
@@ -21,6 +21,6 @@ class Users::SessionsController < Devise::SessionsController
   protected
 
   def configure_sign_in_params
-    devise_parameter_sanitizer.permit(:sign_in, keys: [:attribute])
+    devise_parameter_sanitizer.permit(:sign_in, keys: [:email, :password])
   end
 end

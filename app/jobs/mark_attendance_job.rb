@@ -3,9 +3,8 @@ class MarkAttendanceJob < ApplicationJob
 
   def perform
     User.find_each do |user|
-      if user.attendances.where(date: Date.current).empty?
-        next if user.attendances.create(date: Date.current).present?
-      end
+      next if user.attendances.where(date: Date.current).present?
+      user.attendances.create(date: Date.current)
     end
   end
 end

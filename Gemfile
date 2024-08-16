@@ -22,22 +22,6 @@ gem "redis", ">= 4.0.1"
 
 gem "bcrypt", "~> 3.1.7"
 
-gem "tzinfo-data", platforms: %i[ mswin mswin64 mingw x64_mingw jruby ]
-
-group :development, :test do
-  gem "debug", platforms: %i[ mri mswin mswin64 mingw x64_mingw ]
-end
-
-group :development do
-  gem "web-console"
-  gem "error_highlight", ">= 0.4.0", platforms: [:ruby]
-end
-
-group :test, :development do
-  gem 'capybara'
-  gem 'selenium-webdriver'
-end
-
 gem "bootsnap", require: false
 
 gem "tailwindcss-rails", "~> 2.6"
@@ -53,3 +37,19 @@ gem 'solid_queue'
 gem 'pundit'
 
 gem 'rails-controller-testing'
+
+gem "tzinfo-data", platforms: %i[ mswin mswin64 mingw x64_mingw jruby ]
+
+group :development, :test do
+  gem "debug", platforms: %i[ mri mswin mswin64 mingw x64_mingw ]
+end
+
+group :development do
+  gem "web-console"
+  gem "error_highlight", ">= 0.4.0", platforms: [:ruby]
+end
+
+group :test, :development do
+  gem 'capybara'
+  gem 'selenium-webdriver'
+end

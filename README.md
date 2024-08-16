@@ -1,9 +1,20 @@
-# README
+# Employee Management System
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Overview
 
-Things you may want to cover:
+This project manages the attendances, leaves, work from homes records of employees. It has 3 main roles: HR, Employee and Manager.
+
+* Employee/HR: Can view their attendance, leaves, WFH records. They can mark their attendance and can apply for leaves/WFH.
+
+* Manager: Can view attendance/leaves/WFH records of all the registered users. A manager can approve leaves/wfh of the employees. They can also apply filters. 
+
+## Gems Used
+
+  **Devise**: Authentication of user.
+  **Pundit**: Authorization of user.
+  **RSpec**: Testing.
+  **Hotwire**: Real-time updates.
+  **TailwindCSS**: Styling the app.
 
 * Ruby version
 

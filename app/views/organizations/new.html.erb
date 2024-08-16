@@ -4,9 +4,7 @@
     <hr class="mt-2">
   </div>
 
-  <%= turbo_frame_tag 'organization_form' do %>
-    <%= render 'form', organization: @organization %>
-  <% end %>
+  <%= render 'form', organization: @organization %>
 
   <%= render 'shared/error_message', model: @organization %>
 </div>

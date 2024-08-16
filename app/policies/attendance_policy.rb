@@ -1,26 +1,16 @@
 class AttendancePolicy < ApplicationPolicy
   def index?
-    user.hr? || user.manager? || user.employee?
+    true
   end
-  
-  def show?
-  end
-  
+
   def new?
     user.hr? || user.employee?
   end
 
   def create?
-    user.hr? || user.employee?
+    new?
   end
 
-  class Scope < Scope
-    def resolve
-      if user.manager?
-        scope.all
-      else
-        scope.where(user: user)
-      end
-    end
-  end
+  class Scope < BaseScope; end
+
 end

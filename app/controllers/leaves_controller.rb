@@ -1,26 +1,12 @@
 class LeavesController < ApplicationController
-  before_action :authenticate_user!
-  before_action :set_leave, only: [:show, :update]
+  include Filterable
+
+  before_action :set_leave, only: [:update]
 
   def index
     @leaves = policy_scope(Leave)
-  
-    if current_user.manager?
-      @leaves = @leaves.by_type(params[:type]) if params[:type].present?
-      @leaves = @leaves.by_status(params[:status]) if params[:status].present?
-      # @leaves = @leaves.by_date_order(params[:date]) if params[:date].present?
-      # @leaves = @leaves.by_name_order(params[:name]) if params[:name].present?
-      if params[:name].present?
-        params[:date] = nil
-        @leaves = @leaves.by_name_order(params[:name])
-        params[:name] = nil
-      elsif params[:date].present?
-        @leaves = @leaves.by_date_order(params[:date])
-      end
-    end
-  end  
-
-  def show
+    @leaves = Leave.filter(filtering_params) if current_user.manager?
+    authorize @leaves
   end
 
   def new
@@ -36,19 +22,26 @@ class LeavesController < ApplicationController
       if @leave.save
         format.html { redirect_to employee_leaves_path, notice: 'Leave applied successfully!' }
         format.turbo_stream do
-          render turbo_stream: turbo_stream.replace('leave_form', partial: 'shared/flash_message', locals: { message: 'Leave applied successfully!' })
+          render turbo_stream: turbo_stream.replace('leave_form', partial: 'shared/success_message',
+          locals: { message: 'Leave applied successfully!', redirect_path: employee_leaves_path(current_user) })
         end
       else
-        format.html { render :new }
+        format.html do
+          flash[:alert] = @leaves.errors.full_messages
+          render :new
+        end
         format.turbo_stream do
-          render turbo_stream: turbo_stream.replace('leave_form', partial: 'leaves/form', locals: { leave: @leave })
+          render turbo_stream: turbo_stream.append('leave_form', partial: 'shared/flash_message', 
+          locals: { message: @leave.errors.full_messages })
         end
       end
     end
   end
 
   def update
-    if @leave.update(status: 'approved')
+    authorize @leave
+
+    if @leave.update( status: :approved )
       redirect_to employee_leaves_path, notice: 'Leave approved successfully!'
     else
       redirect_to employee_leaves_path, alert: @leave.errors.full_messages.join(", ")
@@ -58,16 +51,20 @@ class LeavesController < ApplicationController
   private
 
   def set_leave
-    if current_user.manager?
-      @leave = Leave.find(params[:id])
-    else
-      @leave = current_user.leaves.find(params[:id])
-    end
+    @leave =  if current_user.manager?
+                Leave.find(params[:id])
+              else
+                current_user.leaves.find(params[:id])
+              end
     authorize @leave
   end
 
   def leave_params
-    params.require(:leave).permit(:date, :type, :status)
+    params.require(:leave).permit(:date, :type)
+  end
+
+  def filtering_params
+    params.slice(:type, :status, :date, :name)
   end
 
 end

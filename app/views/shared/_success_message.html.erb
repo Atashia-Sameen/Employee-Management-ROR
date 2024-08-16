@@ -1,0 +1,11 @@
+<% if message.present? %>
+  <div id="flash_message" class="alert-message" data-controller="timeout-alert">
+    <%= message %>
+  </div>
+<% end %>
+
+<p class="text-lg font-semibold text-green-600 mb-3">
+  Applied successfully!
+</p>
+
+<%= link_to 'Back to Records', redirect_path, class: 'mt-3 custom-btn' %>

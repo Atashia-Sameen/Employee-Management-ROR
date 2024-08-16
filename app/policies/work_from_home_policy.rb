@@ -1,31 +1,16 @@
 class WorkFromHomePolicy < ApplicationPolicy
   def index?
-    user.hr? || user.manager? || user.employee?
-  end
-
-  def show?
-    user.hr? || user.manager? || record.user_id == user.id
+    true
   end
 
   def create?
-    user.hr? || user.manager? || user.employee?
+    user.hr? || user.employee?
   end
 
   def update?
-    user.hr? || (user.manager? && record.user.organization_id == user.organization_id) || record.user_id == user.id
+    user.manager?
   end
 
-  def destroy?
-    user.hr? || (user.manager? && record.user.organization_id == user.organization_id) || record.user_id == user.id
-  end
+  class Scope < BaseScope; end
 
-  class Scope < Scope
-    def resolve
-      if user.manager?
-        scope.all
-      else
-        scope.where(user: user)
-      end
-    end
-  end
 end

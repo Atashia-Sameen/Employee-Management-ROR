@@ -1,0 +1,7 @@
+<% if !current_user.manager? %>
+  <% if @attendance_today %>
+    <button class="custom-disabled-btn" disabled> Mark Attendance</button>
+  <% else %>
+    <%= link_to "Mark Attendance", new_employee_attendance_path(current_user), class: 'custom-btn' %>
+  <% end %> 
+<% end %>

@@ -34,11 +34,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def configure_sign_up_params
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :other_params])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :email, :role])
   end
 
   def configure_account_update_params
-    devise_parameter_sanitizer.permit(:account_update, keys: [:name, :other_params])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:name, :email, :role])
   end
 
   def after_inactive_sign_up_path_for(resource)

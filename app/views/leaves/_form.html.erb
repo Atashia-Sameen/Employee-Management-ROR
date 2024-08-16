@@ -1,7 +1,7 @@
 <%= form_with(model: leave, url: employee_leaves_path, local: true) do |form| %>
   <div class="mb-4">
     <%= form.label :date, class: 'block text-sm font-medium text-gray-700' %>
-    <%= form.date_field :date, min: Date.tomorrow, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm cursor-pointer' %>
+    <%= form.date_field :date, min: Date.today, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm cursor-pointer' %>
   </div>
 
   <div class="mb-4">

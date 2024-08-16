@@ -1,65 +1,19 @@
 <div class="mt-20 ml-64 px-3 py-1">
   <div class="flex items-center justify-between">
-    <p class="text-2xl font-bold">Leaves Record</p>
-      <% if !current_user.manager? %>
-        <%= link_to "Apply for leave", new_employee_leave_path(current_user.id), class: 'custom-btn' %>
-      <% end %>
+    <p class="text-2xl font-bold">Leaves Records</p>
+    <%= render 'apply_leave_button' %>
   </div>
+
   <hr class="my-4">
 
   <% if current_user.manager? %>
-    <div class="flex items-center justify-center">
-      <%= form_with url: employee_leaves_path, method: :get, local: true, class: 'filter-form' do |form| %>
-        <%= form.select :type, 
-            options_for_select([['All', ''], ['Sick', 'sick'], ['Casual', 'casual']], params[:type]),
-            class: 'filter-select' %>
-        <%= form.select :status, 
-            options_for_select([['All', ''], ['Approved', 'approved'], ['Not Approved', 'not_approved']], params[:status]), 
-            class: 'filter-select' %>
-        <%= form.select :date, 
-            options_for_select([['Date Ascending', 'asc'], ['Date Descending', 'desc']], params[:date]),
-            class: 'filter-select' %>
-        <%= form.select :name, 
-            options_for_select([['Name Ascending', 'asc'], ['Name Descending', 'desc']], params[:name]),
-            class: 'filter-select' %>
-        <%= form.submit 'Apply Filters', class: 'custom-btn' %>
-    <% end %>
-    </div>
+    <%= turbo_frame_tag "filters" do %>
+      <%= render 'shared/filters', url: employee_leaves_path, model: 'Leave' %>
+    <% end %>  
   <% end %>
 
+  <%= turbo_frame_tag "list" do %>
+    <%= render 'shared/records_table', headers: leave_table_headers, rows: leave_table_rows %>
+  <% end %>
 
-  <% headers = if current_user.manager?
-    ['Name', 'Role', 'Day', 'Date', 'Type', 'Status', 'Update']
-  else
-    ['Day', 'Date', 'Type', 'Status']
-  end %>
-
-  <% rows = @leaves.map do |leave| 
-    if current_user.manager?
-      [
-        
-        { content: leave.user.name },
-        { content: leave.user.role.humanize },
-        { content: leave.date.strftime('%A') },
-        { content: leave.date.strftime('%d/%m/%Y') },
-        { content: leave.type.humanize },
-        { content: leave.status.humanize, class: leave.not_approved? ? 'text-red-600' : 'text-green-600' },
-        { content: leave.not_approved? ? 
-          button_to('Approve', employee_leave_path(leave.user.id, leave.id), method: :patch, 
-                    class: 'custom-btn', 
-                    form: { data: { turbo_confirm: 'Are you sure you want to approve this leave?' } }) :
-          link_to('Approved', '#', class: 'px-3 py-2 text-sm text-white rounded-2xl bg-neutral-700 cursor-default', disabled: true)
-        }
-      ]
-    else
-      [
-        { content: leave.date.strftime('%A') },
-        { content: leave.date.strftime('%d/%m/%Y') },
-        { content: leave.type.humanize },
-        { content: leave.status.humanize, class: leave.not_approved? ? 'text-red-600' : 'text-green-600' },
-      ]
-    end
-  end %>
-
-  <%= render 'shared/records_table', headers: headers, rows: rows %>
 </div>

@@ -18,8 +18,8 @@
   
     <div class="field mb-2">
       <%= form.label :role %><br />
-      <%= form.select :role, User.roles.keys.map { |role| [role.humanize, role] }, {}, class: "rounded-lg w-full p-1" %>
-    </div>
+      <%= form.select :role, User.roles.keys.reject { |role| role == 'manager' }.map { |role| [role.humanize, role] }, {}, class: "rounded-lg w-full p-1" %>
+    </div>    
   
     <div class="field mb-2">
       <%= form.label :organization_id %><br />
